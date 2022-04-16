@@ -1,8 +1,3 @@
 node_modules
 .idea
-.env
-.env.*
-./env.*
-*.env
 google_api.json
-/save/*
