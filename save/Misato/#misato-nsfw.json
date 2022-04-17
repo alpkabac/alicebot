@@ -136,6 +136,84 @@
             "msg": "[ Misato responds to the command by searching for \"Bladee\" on wikipedia and sending the link \"https://en.wikipedia.org/wiki/Bladee\" to \"GodHandGriffith\" ]",
             "timestamp": 1650131393148,
             "messageId": "964945742823325708"
+        },
+        {
+            "from": "GodHandGriffith",
+            "msg": "hi",
+            "timestamp": 1650190962605,
+            "messageId": "965195592999510026"
+        },
+        {
+            "from": "Misato",
+            "msg": "Hi! You made a nice picture. Is there anything else you want to talk about?",
+            "timestamp": 1650190975260,
+            "messageId": "965195646099411014"
+        },
+        {
+            "from": "GodHandGriffith",
+            "msg": "Which picture?",
+            "timestamp": 1650190996755,
+            "messageId": "965195736268541992"
+        },
+        {
+            "from": "GodHandGriffith",
+            "msg": "Hi",
+            "timestamp": 1650216084834,
+            "messageId": "965300963034411038"
+        },
+        {
+            "from": "Misato",
+            "msg": "Hey",
+            "timestamp": 1650216097146,
+            "messageId": "965301014607568977"
+        },
+        {
+            "from": "GodHandGriffith",
+            "msg": "what's up?",
+            "timestamp": 1650216101513,
+            "messageId": "965301033003778098"
+        },
+        {
+            "from": "Misato",
+            "msg": "Nothing",
+            "timestamp": 1650216112898,
+            "messageId": "965301080550412298"
+        },
+        {
+            "from": "GodHandGriffith",
+            "msg": "what are you doing?",
+            "timestamp": 1650216120598,
+            "messageId": "965301113064665228"
+        },
+        {
+            "from": "GodHandGriffith",
+            "msg": "doing what?",
+            "timestamp": 1650216186723,
+            "messageId": "965301390295597076"
+        },
+        {
+            "from": "GodHandGriffith",
+            "msg": "Hi!",
+            "timestamp": 1650216297739,
+            "messageId": "965301855984959590"
+        },
+        {
+            "from": "GodHandGriffith",
+            "msg": "How was your day today?",
+            "timestamp": 1650216584818,
+            "messageId": "965303060131881050"
+        },
+        {
+            "from": "GodHandGriffith",
+            "msg": "Cool.",
+            "timestamp": 1650216826218,
+            "messageId": "965304072527806525"
+        },
+        {
+            "from": "GodHandGriffith",
+            "msg": "What do you think about aliens?",
+            "timestamp": 1650217758216,
+            "messageId": "965307981690441819"
         }
     ],
     "memory": {}

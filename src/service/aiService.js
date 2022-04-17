@@ -45,34 +45,74 @@ const DEFAULT_PARAMETERS = {
     prefix: "vanilla",
 }
 
+const ADJUSTED_PARAMETERS = {
+    min_length: 1,
+    max_length: 150,
+    length_no_input: false,
+    end_sequence: "\n",
+    remove_end_sequence: false,
+    remove_input: true,
+    do_sample: true,
+    num_beams: 1,
+    early_stopping: false,
+    no_repeat_ngram_size: 0,
+    num_return_sequences: 1,
+    top_k: 0,
+    top_p: 0.725,
+    temperature: 0.8,
+    repetition_penalty: 1.1875,
+    length_penalty: 1.0,
+    bad_words: null
+}
+
+// const data = {
+//     "text": input,
+//     "min_length": 5,
+//     "max_length": 150,
+//     "temperature": 0.8,
+//     "top_k": 0,
+//     "top_p": 0.725,
+//     "end_sequence": "\n",
+//     "remove_input": true,
+//     "repetition_penalty": 1.1875
+// };
+
 const generateUnthrottled = async (accessToken, input, params) => {
+    
+    const data = {
+        "text": input,
+        "min_length": 1,
+        "max_length": 150,
+        "temperature": 0.8,
+        "top_k": 0,
+        "top_p": 0.725,
+        "end_sequence": "\n",
+        "remove_input": true,
+        "repetition_penalty": 1.1875
+    };
+    console.log(data.input)
     let res
     try {
         res = await axios.post(
-            "https://api.novelai.net/ai/generate",
-            {
-                input,
-                model: process.env.AI_MODEL || "6B-v4",
-                parameters: params
-            },
+            "https://api.nlpcloud.io/v1/gpu/gpt-j/generation", data,
             {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': "Bearer " + ACCESS_TOKEN
+                'Authorization': 'Token ', 
+                'Content-Type': 'application/json'
                 }
             }
         )
     } catch {
         res = null
     }
-
-    return res?.data?.output
+    console.log(res)
+    return res?.data?.generated_text
 }
 
 let isProcessing = false
 // throttles generation at one request per second
 const generate = async function (input, params, lowPriority = false) {
-    if (!ACCESS_TOKEN) ACCESS_TOKEN = await getAccessToken(process.env.NOVEL_AI_API_KEY)
+    // if (!ACCESS_TOKEN) ACCESS_TOKEN = await getAccessToken(process.env.NOVEL_AI_API_KEY)
     const timeStep = parseInt(conf.minTimeBetweenApiRequestsInSeconds) * 1000
 
     if (lowPriority && isProcessing) {
@@ -110,12 +150,12 @@ class AiService {
         while (!parsedAnswer && ++nbTry <= 3) {
             answer = await this.sendPromptDefault(prompt.prompt, params)
             parsedAnswer = messageService.parse(answer)
+            
         }
 
         if (!preventLMI) {
             lmiService.updateLmi(prompt.prompt, answer, parsedAnswer)
         }
-
         return parsedAnswer
     }
 

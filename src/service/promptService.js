@@ -78,6 +78,7 @@ class PromptService {
         const minimalContextLength = encoder.encode(promptContext).length
         if (introduction) {
             promptContext += PromptService.mapJoinMessages(introduction) + '\n'
+            console.log("promptContext:" + promptContext) 
         }
 
         const contextLength = encoder.encode(promptContext).length
