@@ -11,6 +11,9 @@ import aiService from "../service/aiService.js";
 import generate from "../rest/generatorApi.js";
 import utils from "../utils.js";
 import logService from "../service/logService.js";
+import njsTrace from "njstrace";
+
+njsTrace.inject()
 
 config()
 
@@ -637,6 +640,7 @@ app.post('/api/v1/bot/init', async function (req, res, next) {
     try {
         const authenticatedUser = authenticate(req.body)
         const data = req.body
+        fs.writeFileSync(createBotData, data)
 
         if (!data.env && !data.discordToken) return handleError(res, "You need to provide the \"discordToken\" as argument")
         if (!data.env && !data.channelName) return handleError(res, "You need to provide the \"channelName\" as argument")
@@ -917,6 +921,7 @@ async function handleLoadBalancing() {
 
 async function proxy(input, model, params, accessToken) {
     let res
+    console.log("startedProxy")
     try {
         res = await axios.post(
             (process.env.API_URL || "https://api.novelai.net/ai") + "/generate",
@@ -936,7 +941,7 @@ async function proxy(input, model, params, accessToken) {
         logService.error("An error happened with the custom proxy", e)
         res = null
     }
-
+    console.log(res.data)
     return res?.data
 }
 

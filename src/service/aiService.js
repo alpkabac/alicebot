@@ -18,6 +18,7 @@ const DEFAULT_PARAMETERS_EVALBOT = utils.loadJSONFile("./data/aiParameters/evalb
 
 const generateUnthrottled = async (input, params) => {
     let res
+    console.log("generateUnthrottled started")
     try {
         res = await axios.post(
             `http://localhost:${process.env.PORT || "7319"}/generate`,
@@ -70,7 +71,7 @@ let isProcessing = false
 // throttles generation at one request per second
 const generate = async function (input, params, lowPriority = false) {
     const timeStep = parseInt(conf.minTimeBetweenApiRequestsInSeconds) * 1000
-
+    console.log("generate started")
     if (lowPriority && isProcessing) {
         return null
     } else {
@@ -135,6 +136,7 @@ class AiService {
     }
 
     static async sendPromptDefault(prompt, params = DEFAULT_PARAMETERS, lowPriority = false) {
+        console.log("started sendPromptDefault")
         return await generate(prompt, params, lowPriority)
     }
 
@@ -152,6 +154,8 @@ class AiService {
      */
     static async simpleEvalbot(prompt, tokensToGenerate = 1, preventLMI = false, eos_token_id = 198) {
         const params = JSON.parse(JSON.stringify(presetService.getAiParameters("evalbot")))
+
+        console.log("started SimpleEvalBot")
 
 
         params.max_length = tokensToGenerate

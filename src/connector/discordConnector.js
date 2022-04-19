@@ -22,6 +22,14 @@ import duckHuntCommands from "../command/duckHuntCommands.js"
 import generatorService from "../service/generatorService.js";
 import sharp from "sharp";
 import travellingMerchantService from "../service/rpg/travellingMerchantService.js";
+//import express import bodyparser
+import express from 'express'
+import bodyParser from 'body-parser'
+import fs from "fs"
+const port = 3001
+//create express app
+const app = express()
+app.use(bodyParser.json())
 
 dotenv.config()
 
@@ -213,6 +221,8 @@ const messageList = []
 
 function appendMessage(msg) {
     messageList.push(msg)
+    // const messageFormat = JSON.stringify(msg)
+    // fs.writeFileSync("messageFormat", messageFormat)
 }
 
 function isMessageAnAllowedCommand(msg) {
@@ -280,8 +290,14 @@ async function processMessage(msg) {
     const channelName = privateMessage ?
         "##" + msg.channel.id
         : "#" + msg.channel.name
-
-    const file = msg.attachments.first()?.url;
+        
+        let file 
+        if(!msg.attachments.size) {
+            file = null
+        }
+        else {
+            file = msg.attachments.first().url 
+        }
 
     if (!utils.isMessageFromAllowedChannel(channelName)) return
 
@@ -396,7 +412,8 @@ async function processMessage(msg) {
     }
 
     if (message && message.success) {
-        await originalMsg.react("✅").catch(() => null)
+        console.log("ok")
+        // await originalMsg.react("✅").catch(() => null)
     }
 
     if (message && message.reactWith) {
@@ -432,7 +449,8 @@ async function processMessage(msg) {
 
         const timeToWait = message.instantReply ? 0 : messageLength * (message.fastTyping ? 10 : 50)
         if (timeToWait > 0) {
-            channels[channelName].startTyping().then()
+            // channels[channelName].startTyping().then()
+            console.log("Typing...")
         }
 
         await utils.sleep(timeToWait)
@@ -564,9 +582,9 @@ async function parseForceMessage(channel, msg) {
     }
     channels[channel].stopTyping(true)
     locked[channel] = false
-    if (!channel.startsWith("##") && !parsedMessage.startsWith("#") && ttsEnabled) {
-        await speak(parsedMessage, channel)
-    }
+    // if (!channel.startsWith("##") && !parsedMessage.startsWith("#") && ttsEnabled) {
+    //     await speak(parsedMessage, channel)
+    // }
 }
 
 async function messageLoop() {
@@ -627,9 +645,17 @@ async function messageLoop() {
     setTimeout(messageLoop, 2500)
 }
 
-messageLoop()
+//express create post route 
+app.post('/message', async, (req, res) => {
+appendMessage(req.body)
+const response = await messageLoop()
+
+})
 
 bot.on('message', appendMessage);
+
+//express
+
 
 bot.on('messageReactionAdd', async (reaction, user) => {
     if (!reaction.me) {
@@ -764,5 +790,11 @@ async function mainRpgLoop() {
 }
 
 mainRpgLoop().then()
+
+//start express server
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`)
+})
+
 
 export default {}
